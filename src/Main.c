@@ -28,14 +28,17 @@ void Function_Render(unsigned int* Target,int Width,int Height,unsigned int colo
 		Vec2 Pos = { i,0.0f };
 		
 		float x = TransformedView_ScreenWorldX(tv,i);
-		x_var->v = (MFunc_Real)x;
 
-		Token ret = MFunc_Parser_Exe(mfp,t);
-		Pos.y = TransformedView_WorldScreenY(tv,-Double_Parse(ret.str,1));
-		Token_Free(&ret);
+		x_var->v = (MFunc_Real)x;
+		Pos.y = TransformedView_WorldScreenY(tv,-MFunc_Parser_ExeReal(mfp,t));
 		
-		//if(F32_Abs(Pos.y - PosBefore.y) < GetHeight())
-		RenderLine(PosBefore,Pos,color,1.0f);
+		//Token ret = MFunc_Parser_Exe(mfp,t);
+		//Pos.y = TransformedView_WorldScreenY(tv,-F64_Parse(ret.str));
+		//Token_Free(&ret);
+		
+		if(!((Pos.y < 0.0f && PosBefore.y < 0.0f) ||
+			 (Pos.y >= GetHeight() && PosBefore.y >= GetHeight())))
+			RenderLine(PosBefore,Pos,color,1.0f);
 
 		PosBefore = Pos;
 	}
@@ -51,7 +54,7 @@ void Setup(AlxWindow* w){
 		(Vec2){ GetWidth(),GetHeight() },
 		(Vec2){ -25.0f,-50.0f },
 		(Vec2){ 0.01f,0.01f },
-		(float)GetHeight() / (float)GetWidth()
+		(float)GetWidth() / (float)GetHeight()
 	);
 
 	tb = TextBox_New(Input_New(50,1),(Rect){0.0f,0.0f,2300.0f,100.0f},ALXFONT_PATHS_HIGH,50,100,BLACK);
@@ -63,6 +66,10 @@ void Setup(AlxWindow* w){
 void Update(AlxWindow* w){
 	TransformedView_HandlePanZoom(&tv,window.Strokes,GetMouse());
 	
+	if(Stroke(ALX_MOUSE_L).PRESSED) {
+		Vec2 m = TransformedView_ScreenWorldPos(&tv,GetMouse());
+		printf("%f %f\n",m.x,m.y);
+	}
 	if(Stroke(ALX_KEY_ENTER).PRESSED) {
 		if(tb.In.Buffer.size>0){
 			CStr str = String_CStr(&tb.In.Buffer);
@@ -99,7 +106,13 @@ void Update(AlxWindow* w){
 
 	for(int i = 0;i<mfp.sts.size;i++){
 		Token* t = (Token*)Vector_Get(&mfp.sts,i);
-		Function_Render(WINDOW_STD_ARGS,RED,&tv,&mfp,t);
+		const Pixel table[] = {
+			RED,GREEN,BLUE,YELLOW,
+			LIGHT_RED,LIGHT_GREEN,LIGHT_BLUE,LIGHT_YELLOW,
+			DARK_RED,DARK_GREEN,DARK_BLUE,DARK_YELLOW
+		};
+		const Pixel p = table[i % (sizeof(table) / sizeof(*table))];
+		Function_Render(WINDOW_STD_ARGS,p,&tv,&mfp,t);
 	}
 
 	RenderTextBox(&tb);
