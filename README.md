@@ -1,193 +1,56 @@
-# Gui_GeoGebra2_4.0
+## Project README
 
+### Overview
+The project is a graphical user interface (GUI) for an educational tool, specifically designed to simulate the functionality of GeoGebra 2.3 using C/C++. The GUI supports cross-platform compilation and execution on Linux, Windows, Wine, and WebAssembly.
 
-## Project Overview
+### Features
+- Cross-platform support: Builds and runs on Linux, Windows, Wine, and WebAssembly.
+- Advanced mathematical functions: Supports complex calculations through custom libraries.
+- Graphical interface: Provides a visual environment for users to interact with mathematical expressions and equations.
 
-This project implements specialized functionality related to geogebra2_4.0.
+### Project Structure
 
-## Core Components
-
-### Main Functionality
-- Implements core algorithms for geogebra2_4.0
-- Efficient data structures
-- Optimized performance
-- Clean code organization
-
-### Technical Features
-- C/C++ implementation
-- Dynamic memory management
-- Platform-independent design
-- Real-time capable
-
-### Architecture
-- Module separation
-- Clear interface design
-- Proper abstraction layers
-- Extensible design
-
-## Use Cases
-- Production systems
-- Educational purposes
-- Research applications
-- Performance-critical operations
-
-## Performance Characteristics
-- Optimized algorithms
-- Efficient memory usage
-- Scalable architecture
-- Minimal overhead
-
-## Implementation Quality
-- Well-organized code
-- Meaningful naming
-- Proper error handling
-- Memory management
-
-## Build and Deployment
-- Standard C/C++ compilation
-- Makefile-based building
-- Cross-platform support
-- Easy integration
-
-
-## Building the Project
-
-### Prerequisites
-- C/C++ Compiler (GCC, Clang, or MSVC)
+#### Prerequisites
+- C/C++ Compiler and Debugger (GCC, Clang)
 - Make utility
 - Standard development tools
+- Libraries needed in specific projects:
+  - Linux: `X11`, `png`, `jpeg`
+  - Windows: `user32`, `gdi32`, `winmm`
+  - Wine: `user32`, `gdi32`, `winmm`
+  - WebAssembly: No additional libraries required
 
-### Build Steps
+#### Build & Run
+The project uses Makefiles to handle the build process for different operating systems. Below are the steps to build and run the project:
 
-1. Navigate to project directory:
-```bash
-cd Gui_GeoGebra2_4.0
-```
+1. **Build on Linux**:
+   ```sh
+   cd /path/to/project
+   make -f Makefile.linux all
+   make -f Makefile.linux do  # Build + execute
+   ```
 
-2. Build the project:
-```bash
-make -f Makefile.(os) all
-```
+2. **Build on Windows**:
+   ```sh
+   cd C:\path\to\project
+   mingw32-make -f Makefile.windows all
+   mingw32-make -f Makefile.windows do  # Build + execute
+   ```
 
-3. For clean rebuild:
-```bash
-make -f Makefile.(os) clean
-make -f Makefile.(os) all
-```
+3. **Build for Wine (Cross-compilation for Windows)**:
+   ```sh
+   cd /path/to/project
+   make -f Makefile.wine all
+   WINEPREFIX=~/wine64 WINEARCH=win64 mingw32-make -f Makefile.wine do  # Build + execute
+   ```
 
-4. If there are ./bin and ./libs directories, build libs with:
-```bash
-make -f Makefile.(os) cleanlib
-make -f Makefile.(os) lib
-```
+4. **Build for WebAssembly**:
+   ```sh
+   cd /path/to/project
+   emmake make -f Makefile.web all
+   emrun --no_browser --port 8080 build/index.html  # Start a local web server to run the application
+   ```
 
-### Build Options
-```bash
-make -f Makefile.(os) all         # build output
-make -f Makefile.(os) do        # build + exe output
-make -f Makefile.(os) clean   # Remove build artifacts
-```
+These commands ensure that the project is compiled and executed according to the specified platform. The `do` target simplifies the process by both building and executing the project.
 
-## Running the Project
-
-Execute the compiled binary:
-
-```bash
-./build/Main(.exe)
-```
-
-Or using make:
-```bash
-make -f Makefile.(os) exe
-```
-
-## Project Organization
-
-```
-Gui_GeoGebra2_4.0/
-├── src/
-│   ├── Main.c          # Entry point
-│   └── *.c             # Implementation files
-├── Makefile            # Build configuration
-└── README.md           # This file
-```
-
-## Technical Details
-
-### Language: C/C++
-- Performance-oriented
-- Direct hardware access where needed
-- Memory efficient
-- Widely portable
-
-### Key Technologies
-- Standard C library
-- System-specific libraries as needed
-- Algorithm optimization
-- Efficient data structures
-
-### Code Quality
-- Clean, readable implementation
-- Proper error handling
-- Resource management
-- Well-documented algorithms
-
-## Development Notes
-
-### Architecture Decisions
-- Modular design for reusability
-- Efficient algorithms for performance
-- Clear separation of concerns
-- Extensible structure
-
-### Performance Optimizations
-- Algorithm efficiency
-- Memory layout optimization
-- Cache-conscious programming
-- Minimal overhead
-
-### Portability
-- Cross-platform compatible
-- Platform-specific optimizations where possible
-- Standard library usage
-- No external dependencies (where feasible)
-
-## Troubleshooting
-
-### Build Issues
-- Ensure compiler is installed
-- Check file paths and permissions
-- Verify Make installation
-- Review compiler error messages
-
-### Runtime Issues
-- Check input data validity
-- Verify file accessibility
-- Ensure sufficient memory
-- Review output format
-
-### Performance Issues
-- Check compiler optimization flags
-- Profile hot code paths
-- Review algorithm complexity
-- Consider input size
-
-## Future Improvements
-
-Potential enhancements:
-- Additional optimization opportunities
-- Extended functionality
-- Platform-specific optimizations
-- Performance profiling
-
-## References
-
-For technical background:
-- Algorithm textbooks
-- Computer science references
-- Language documentation
-- Online educational resources
-
----
-
-*Project implementing practical algorithms and data structures in C/C++*
+The Makefiles provide comprehensive control over the build process, allowing for clean builds and incremental updates without removing intermediate files.
