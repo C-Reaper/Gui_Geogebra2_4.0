@@ -74,7 +74,7 @@ void Update(AlxWindow* w){
 		if(tb.In.Buffer.size>0){
 			CStr str = String_CStr(&tb.In.Buffer);
 			if(str){
-				MFunc_Parser_Add(&mfp,str);
+				//MFunc_Parser_Add(&mfp,str);
 				
 				MFunc_Parser_Add(&mfp,str);
 				MFunc_Parser_Do(&mfp,mfp.sts.size - 1,MFunc_Parser_Derivative);
